@@ -10,5 +10,9 @@ public class Test {
         get("/", (request, response) -> {
             return "GET /";
         });
+
+        get("/test", (request, response) -> {
+            return "GET /test";
+        });
     }
 }
