@@ -8,7 +8,7 @@ public class Test {
         setPort(80);
 
         get("/", (request, response) -> {
-            return "Test OK";
+            return "GET /";
         });
     }
 }
