@@ -11,10 +11,6 @@ public class Route {
             return "GET /";
         });
 
-        get("/test", (request, response) -> {
-            return "GET /test";
-        });
-
         post("/demandes", (request, response) -> {
             return "Test OK";
         });
