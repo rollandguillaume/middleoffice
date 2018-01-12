@@ -8,7 +8,11 @@ public class Route {
         setPort(80);
 
         get("/", (request, response) -> {
-            return "Test OK";
+            return "GET /";
+        });
+
+        get("/test", (request, response) -> {
+            return "GET /test";
         });
 
         post("/demandes", (request, response) -> {
