@@ -1,4 +1,4 @@
-FROM java:8 
+FROM java:8
 
 # Install maven
 RUN apt-get update && apt-get install -y maven
@@ -15,4 +15,4 @@ ADD src /code/src
 RUN ["mvn", "package"]
 
 EXPOSE 80
-CMD ["/usr/lib/jvm/java-8-openjdk-amd64/bin/java", "-jar", "target/sparkexample-jar-with-dependencies.jar"]
+CMD ["/usr/lib/jvm/java-8-openjdk-amd64/bin/java", "-jar", "target/middleoffice-jar-with-dependencies.jar"]
