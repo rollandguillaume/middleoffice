@@ -28,7 +28,9 @@ public class Route {
         });
 
         post("/demandes/:id", (request, response) -> {
-            return "Test OK" + request.params(":id");
+          String vote = request.queryParams("vote");
+
+          return "paramId=" + request.params(":id") + "; vote=" + vote;
         });
     }
 }

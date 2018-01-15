@@ -13,7 +13,8 @@ sudo java -jar target/middleoffice-jar-with-dependencies.jar
 
 Acces au serveur dans un navigateur :
 
-<nom_de_la_machine>:80/
+GET : <nom_de_la_machine>:80/
+POST : curl -X POST -d "param1=truc&param2=truc2" <nom_de_la_machine>:80/
 
 ~ eventuellement arreter le service apache2 du port 80
 
