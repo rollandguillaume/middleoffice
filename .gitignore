@@ -1,1 +1,5 @@
 target/
+/.metadata/
+API-Java-Spark/.classpath
+API-Java-Spark/.project
+API-Java-Spark/.settings/
