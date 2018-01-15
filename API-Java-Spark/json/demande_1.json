@@ -1,0 +1,34 @@
+{
+  "demande":
+  {
+    "type": "bourse",
+    "id": 1,
+    "label": "Demande de bourse pour Cookies",
+    "reponses": [{
+        "href": "https://duckduckgo.com",
+        "accept": true,
+        "label": "Oui"
+      },{
+        "href": "https://lite.qwant.com/",
+        "accept": false,
+        "label": "Non"
+    }],
+    "origin": 1,
+    "dtdemande": "01-12-2018",
+    "dtlastmodif": "01-12-2018"
+  },
+  "reponsesObtenues":
+  [{
+    "voted": true,
+    "personne": 2,
+    "dtvote": "01-12-2018"
+  },{
+    "voted": false,
+    "personne": 3,
+    "dtvote": "01-12-2018"
+  },{
+    "voted": true,
+    "personne": 4,
+    "dtvote": "01-12-2018"
+  }]
+}
