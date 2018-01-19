@@ -1,9 +1,30 @@
 package middleoffice;
 
 import static spark.Spark.*;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 import org.json.JSONObject;
 
 public class Route {
+	public String demandesCreation() {
+		String content = "";
+		try {
+			BufferedReader in = new BufferedReader(new FileReader("Web/demandesCreation.html"));
+			String str;
+			while ((str = in.readLine()) != null) {
+				content += str;
+			}
+			in.close();
+		} catch (IOException e) {
+			System.err.println("Route::demandesCreation Exception : ");
+			System.err.println(e);
+		}
+
+		return content;
+	}
 
     private JSONObject obj = new JSONObject();
     private int id = 0;
@@ -12,9 +33,9 @@ public class Route {
         Route route = new Route();
         setPort(80);
 
-        get("/", (request, response) -> {
-            return "GET /";
-        });
+		get("/", (request, response) -> {
+			return "GET /";
+		});
 
         post("/demandes", (request, response) -> {
           route.obj.put("id"+route.id, ""+route.id);
@@ -27,25 +48,25 @@ public class Route {
           return "demande ajoutée : voir GET /demandes";
         });
 
-        put("/demandes/:id", (request, response) -> {
-            return "Test OK " + request.params(":id");
+        get("/demandes/creation", (request, response) -> {
+          return route.demandesCreation();
         });
 
         get("/demandes", (request, response) -> {
           return route.obj;
         });
 
-        get("/demandes/:id", (request, response) -> {
+		post("/demandes/:id", (request, response) -> {
+			String vote = request.queryParams("vote");
 
-          return "Test OK" + request.params(":id");
-        });
+			String json = "{'demandes':{'id':3}}";
 
-        post("/demandes/:id", (request, response) -> {
-          String vote = request.queryParams("vote");
+			return "paramId=" + request.params(":id") + "; vote=" + vote + " ; json=" + json;
+		});
 
-          String json = "{'demandes':{'id':3}}";
+		get("/demandes/:id", (request, response) -> {
 
-          return "paramId=" + request.params(":id") + "; vote=" + vote +" ; json="+json;
-        });
-    }
+			return "Test OK" + request.params(":id");
+		});
+	}
 }
