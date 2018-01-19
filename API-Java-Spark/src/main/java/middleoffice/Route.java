@@ -5,7 +5,11 @@ import org.json.JSONObject;
 
 public class Route {
 
+    private JSONObject obj = new JSONObject();
+    private int id = 0;
+
     public static void main(String[] args) {
+        Route route = new Route();
         setPort(80);
 
         get("/", (request, response) -> {
@@ -13,7 +17,14 @@ public class Route {
         });
 
         post("/demandes", (request, response) -> {
-            return "Test OK";
+          route.obj.put("id:", ""+route.id);
+
+          // obj.put("num", new Integer(100));
+          // obj.put("balance", new Double(1000.21));
+          // obj.put("is_vip", new Boolean(true));
+
+          route.id++;
+          return "demande ajoutée : voir GET /demandes";
         });
 
         put("/demandes/:id", (request, response) -> {
@@ -21,14 +32,7 @@ public class Route {
         });
 
         get("/demandes", (request, response) -> {
-          JSONObject obj = new JSONObject();
-
-          obj.put("name", "foo");
-          // obj.put("num", new Integer(100));
-          // obj.put("balance", new Double(1000.21));
-          // obj.put("is_vip", new Boolean(true));
-
-          return obj;
+          return route.obj;
         });
 
         get("/demandes/:id", (request, response) -> {
