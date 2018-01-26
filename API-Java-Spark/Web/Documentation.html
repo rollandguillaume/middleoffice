@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+ <head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+   <meta name="viewport" content="width=device-width,initial-scale=1">
+   <title>Documentation</title>
+   <meta name="author" content="name">
+   <meta name="description" content="description here">
+   <meta name="keywords" content="keywords,here">
+ </head>
+ <body>
+   <h1>Documentation de l'API</h1>
+   <ul>
+     <li>GET /</li>
+     <p>
+       Documentation de l'API
+     </p>
+     <br>
+     <li>GET /demandes</li>
+     <p>
+       Liste de toutes les demandes en attente de vote
+       Une redirection vers la demande sera présentes pour permettre le vote
+     </p>
+     <br>
+     <li>GET /demande/{index}</li>
+     <p>
+       Affichage de la demande correspondante à l'index si elle éxiste
+     </p>
+     <br>
+     <li>POST /demande</li>
+     <p>
+       URL appelé lors de la création d'une demande avec les paramètre suivants :
+       <ul>
+         <li>type : Type de la demande choisis parmit les différents type proposés</li>
+         <li>label : Sujet de la demande</li>
+         <li>origin : Dépositaire de la demande</li>
+         <li>
+           Réponse OUI :
+           <ul>
+             <li>href : URL de redirection</li>
+             <li>accept : VRAI</li>
+             <li>label : Nom du choix</li>
+           </ul>
+         </li>
+         <li>
+           Réponse NON :
+           <ul>
+             <li>href : URL de redirection</li>
+             <li>accept : FAUX</li>
+             <li>label : Nom du choix</li>
+           </ul>
+         </li>
+       </ul>
+     </p>
+     <br>
+     <li>PUT /demande/{index}</li>
+     <p>
+       Lien de modification de la demande index avec les donné  modifiées (voir format d'une demande)
+     </p>
+     <br>
+     <li>POST /demande/{index}</li>
+     <p>
+       URL de vote d'une demande.
+       Redirection vers l'URL OUI ou NON
+     </p>
+     <br>
+   </ul>
+ </body>
+</html>

@@ -15,12 +15,12 @@ import org.json.JSONArray;
 
 public class Route {
 	private JSONObject obj = new JSONObject();
-    private int id = 0;
-    
-	public String newDemande() {
+	private int id = 0;
+
+	public String newHtml(String page) {
 		String content = "";
 		try {
-			BufferedReader in = new BufferedReader(new FileReader("Web/demandesCreation.html"));
+			BufferedReader in = new BufferedReader(new FileReader("Web/"+ page));
 			String str;
 			while ((str = in.readLine()) != null) {
 				content += str;
@@ -33,69 +33,95 @@ public class Route {
 
 		return content;
 	}
-	
+
 	public void createDemande(Route route, Request request) {
-		int iddemande = route.id;
+		JSONObject demande = new JSONObject();
+		demande.put("id", route.id);
 
-	      JSONObject demande = new JSONObject();
-	      demande.put("id", route.id);
+		JSONObject repYes = new JSONObject();
+		repYes.put("href", request.queryParams("lienAccept"));
+		repYes.put("accept", true);
+		repYes.put("label", request.queryParams("labelAccept"));
+		JSONObject repNo = new JSONObject();
+		repNo.put("href", request.queryParams("lienRefusal"));
+		repNo.put("accept", false);
+		repNo.put("label", request.queryParams("labelRefusal"));
 
-	          JSONObject repYes = new JSONObject();
-	          repYes.put("href", request.queryParams("lienAccept"));
-	          repYes.put("accept", true);
-	          repYes.put("label", request.queryParams("labelAccept"));
-	          JSONObject repNo = new JSONObject();
-	          repNo.put("href", request.queryParams("lienRefusal"));
-	          repNo.put("accept", false);
-	          repNo.put("label", request.queryParams("labelRefusal"));
+		JSONArray responses = new JSONArray();
+		responses.put(repYes);
+		responses.put(repNo);
 
-	        JSONArray responses = new JSONArray();
-	        responses.put(repYes);
-	        responses.put(repNo);
+		demande.put("responses", responses);
+		demande.put("type", request.queryParams("type"));
+		demande.put("label", request.queryParams("label"));
+		demande.put("origin", request.queryParams("origin"));
+		demande.put("voted", false);
 
-	      demande.put("responses", responses);
-	      demande.put("type", request.queryParams("type"));
-	      demande.put("label", request.queryParams("label"));
-	      demande.put("origin", request.queryParams("origin"));
+		route.obj.put("demandes", demande);
 
-	      route.obj.put("demandes", demande);
-
-	      route.id++;
+		route.id++;
 	}
 
-    public static void main(String[] args) {
-        Route route = new Route();
-        setPort(80);
+	private JSONObject getDemande(int id) {
+		JSONObject ret = null;
+
+		int size = this.obj.length();
+		JSONObject tmpDemande = null;
+		int i = 0;
+		boolean find = false;
+		while (i < size && !find) {
+			tmpDemande = (JSONObject) this.obj.get(i);
+			if (Integer.parseInt(tmpDemande.get("id").toString()) == id) {
+				ret = tmpDemande;
+				find = true;
+			}
+			i++;
+		}
+
+		return ret;
+	}
+
+	public static void main(String[] args) {
+		Route route = new Route();
+		setPort(80);
 
 		get("/", (request, response) -> {
-			return "GET /";
+			return route.newHtml("Documentation.html");
 		});
 
-    post("/demandes", (request, response) -> {
-    	route.createDemande(route, request);
-    	response.redirect("/demandes");
-    	return "demande ajoutée : voir GET /demandes";
-    });
+		post("/demandes", (request, response) -> {
+			route.createDemande(route, request);
+			response.redirect("/demandes");
+			return "demande ajoutée : voir GET /demandes";
+		});
 
-    get("/demandes/creation", (request, response) -> {
-      return route.newDemande();
-    });
+		get("/demandes/creation", (request, response) -> {
+			return route.newHtml("demandesCreation.html");
+		});
 
-    get("/demandes", (request, response) -> {
-      return route.obj;
-    });
+		get("/demandes", (request, response) -> {
+			return route.obj;
+		});
 
 		post("/demandes/:id", (request, response) -> {
 			String vote = request.queryParams("vote");
 
-			String json = "{'demandes':{'id':3}}";
+			JSONObject tmpDemande = route.getDemande(Integer.parseInt(request.params(":id")));
 
-			return "paramId=" + request.params(":id") + "; vote=" + vote + " ; json=" + json;
+			tmpDemande.put("voted", true);
+
+			// TODO redirection
+			return tmpDemande;
 		});
 
 		get("/demandes/:id", (request, response) -> {
+			JSONObject ret = route.getDemande(Integer.parseInt(request.params(":id")));
 
-			return "Test OK" + request.params(":id");
+			if (ret != null) {
+				return ret;
+			} else {
+				return "Erreur 404";
+			}
 		});
 	}
 }
