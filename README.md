@@ -20,6 +20,3 @@ POST : curl -X POST -d "param1=truc&param2=truc2" <nom_de_la_machine>:80/
 
 service apache2 stop
 
-
-- [] test
-- [x] teest
