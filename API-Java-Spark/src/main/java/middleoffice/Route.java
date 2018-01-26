@@ -8,10 +8,16 @@ import java.io.IOException;
 import java.lang.ProcessBuilder.Redirect;
 
 import org.json.JSONObject;
+
+import spark.Request;
+
 import org.json.JSONArray;
 
 public class Route {
-	public String demandesCreation() {
+	private JSONObject obj = new JSONObject();
+    private int id = 0;
+    
+	public String newDemande() {
 		String content = "";
 		try {
 			BufferedReader in = new BufferedReader(new FileReader("Web/demandesCreation.html"));
@@ -27,9 +33,35 @@ public class Route {
 
 		return content;
 	}
+	
+	public void createDemande(Route route, Request request) {
+		int iddemande = route.id;
 
-    private JSONObject obj = new JSONObject();
-    private int id = 0;
+	      JSONObject demande = new JSONObject();
+	      demande.put("id", route.id);
+
+	          JSONObject repYes = new JSONObject();
+	          repYes.put("href", request.queryParams("lienAccept"));
+	          repYes.put("accept", true);
+	          repYes.put("label", request.queryParams("labelAccept"));
+	          JSONObject repNo = new JSONObject();
+	          repNo.put("href", request.queryParams("lienRefusal"));
+	          repNo.put("accept", false);
+	          repNo.put("label", request.queryParams("labelRefusal"));
+
+	        JSONArray responses = new JSONArray();
+	        responses.put(repYes);
+	        responses.put(repNo);
+
+	      demande.put("responses", responses);
+	      demande.put("type", request.queryParams("type"));
+	      demande.put("label", request.queryParams("label"));
+	      demande.put("origin", request.queryParams("origin"));
+
+	      route.obj.put("demandes", demande);
+
+	      route.id++;
+	}
 
     public static void main(String[] args) {
         Route route = new Route();
@@ -40,38 +72,13 @@ public class Route {
 		});
 
     post("/demandes", (request, response) -> {
-      int iddemande = route.id;
-
-      JSONObject demande = new JSONObject();
-      demande.put("id", route.id);
-
-          JSONObject repYes = new JSONObject();
-          repYes.put("href", request.queryParams("lienAccept"));
-          repYes.put("accept", true);
-          repYes.put("label", request.queryParams("labelAccept"));
-          JSONObject repNo = new JSONObject();
-          repNo.put("href", request.queryParams("lienRefusal"));
-          repNo.put("accept", false);
-          repNo.put("label", request.queryParams("labelRefusal"));
-
-        JSONArray responses = new JSONArray();
-        responses.put(repYes);
-        responses.put(repNo);
-
-      demande.put("responses", responses);
-      demande.put("type", request.queryParams("type"));
-      demande.put("label", request.queryParams("label"));
-      demande.put("origin", request.queryParams("origin"));
-
-      route.obj.put("demande"+iddemande, demande);
-
-      route.id++;
-      response.redirect("/demandes");
-      return "demande ajoutée : voir GET /demandes";
+    	route.createDemande(route, request);
+    	response.redirect("/demandes");
+    	return "demande ajoutée : voir GET /demandes";
     });
 
     get("/demandes/creation", (request, response) -> {
-      return route.demandesCreation();
+      return route.newDemande();
     });
 
     get("/demandes", (request, response) -> {
