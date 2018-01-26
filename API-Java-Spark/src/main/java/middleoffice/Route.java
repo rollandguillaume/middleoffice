@@ -14,8 +14,14 @@ import spark.Request;
 import org.json.JSONArray;
 
 public class Route {
-	private JSONObject obj = new JSONObject();
-	private int id = 0;
+	private JSONObject obj;
+	private int id;
+	
+	public Route() {
+		this.obj = new JSONObject();
+		this.obj.put("demandes", new JSONArray());
+		this.id = 1;
+	}
 
 	public String newHtml(String page) {
 		String content = "";
@@ -34,9 +40,9 @@ public class Route {
 		return content;
 	}
 
-	public void createDemande(Route route, Request request) {
+	public void createDemande(Request request) {
 		JSONObject demande = new JSONObject();
-		demande.put("id", route.id);
+		demande.put("id", this.id);
 
 		JSONObject repYes = new JSONObject();
 		repYes.put("href", request.queryParams("lienAccept"));
@@ -56,19 +62,33 @@ public class Route {
 		demande.put("label", request.queryParams("label"));
 		demande.put("origin", request.queryParams("origin"));
 		demande.put("voted", false);
+		
+		JSONArray demandes = this.obj.getJSONArray("demandes");
+		demandes.put(demande);
 
-		route.obj.put("demandes", demande);
+		this.obj.put("demandes", demandes);
 
-		route.id++;
+		this.id++;
 	}
 
 	private JSONObject getDemande(int id) {
 		JSONObject ret = null;
-
 		int size = this.obj.length();
+		JSONArray demandes = null;
 		JSONObject tmpDemande = null;
 		int i = 0;
 		boolean find = false;
+		
+		demandes = this.obj.getJSONArray("demandes");
+		for (Object obj : demandes) {
+			tmpDemande = (JSONObject) obj;
+			
+			if (Integer.parseInt(tmpDemande.get("id").toString()) == id) {
+				ret = tmpDemande;
+			}
+		}
+		
+		/*
 		while (i < size && !find) {
 			tmpDemande = (JSONObject) this.obj.get(i);
 			if (Integer.parseInt(tmpDemande.get("id").toString()) == id) {
@@ -76,7 +96,7 @@ public class Route {
 				find = true;
 			}
 			i++;
-		}
+		}*/
 
 		return ret;
 	}
@@ -90,7 +110,7 @@ public class Route {
 		});
 
 		post("/demandes", (request, response) -> {
-			route.createDemande(route, request);
+			route.createDemande(request);
 			response.redirect("/demandes");
 			return "demande ajoutée : voir GET /demandes";
 		});
