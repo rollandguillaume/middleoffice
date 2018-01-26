@@ -5,8 +5,10 @@ import static spark.Spark.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.ProcessBuilder.Redirect;
 
 import org.json.JSONObject;
+import org.json.JSONArray;
 
 public class Route {
 	public String demandesCreation() {
@@ -37,24 +39,44 @@ public class Route {
 			return "GET /";
 		});
 
-        post("/demandes", (request, response) -> {
-          route.obj.put("id"+route.id, ""+route.id);
+    post("/demandes", (request, response) -> {
+      int iddemande = route.id;
 
-          // obj.put("num", new Integer(100));
-          // obj.put("balance", new Double(1000.21));
-          // obj.put("is_vip", new Boolean(true));
+      JSONObject demande = new JSONObject();
+      demande.put("id", route.id);
 
-          route.id++;
-          return "demande ajoutée : voir GET /demandes";
-        });
+          JSONObject repYes = new JSONObject();
+          repYes.put("href", request.queryParams("lienAccept"));
+          repYes.put("accept", true);
+          repYes.put("label", request.queryParams("labelAccept"));
+          JSONObject repNo = new JSONObject();
+          repNo.put("href", request.queryParams("lienRefusal"));
+          repNo.put("accept", false);
+          repNo.put("label", request.queryParams("labelRefusal"));
 
-        get("/demandes/creation", (request, response) -> {
-          return route.demandesCreation();
-        });
+        JSONArray responses = new JSONArray();
+        responses.put(repYes);
+        responses.put(repNo);
 
-        get("/demandes", (request, response) -> {
-          return route.obj;
-        });
+      demande.put("responses", responses);
+      demande.put("type", request.queryParams("type"));
+      demande.put("label", request.queryParams("label"));
+      demande.put("origin", request.queryParams("origin"));
+
+      route.obj.put("demande"+iddemande, demande);
+
+      route.id++;
+      response.redirect("/demandes");
+      return "demande ajoutée : voir GET /demandes";
+    });
+
+    get("/demandes/creation", (request, response) -> {
+      return route.demandesCreation();
+    });
+
+    get("/demandes", (request, response) -> {
+      return route.obj;
+    });
 
 		post("/demandes/:id", (request, response) -> {
 			String vote = request.queryParams("vote");
