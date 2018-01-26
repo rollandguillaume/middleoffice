@@ -28,7 +28,26 @@ public class Route {
 		return content;
 	}
 
-    private JSONObject obj = new JSONObject();
+	private JSONObject getDemande (int id) {
+		JSONObject ret = null;
+
+		int size = this.obj.length();
+		JSONObject tmpDemande = null;
+		int i = 0;
+		boolean find = false;
+		while (i<size && !find) {
+			tmpDemande = (JSONObject)this.obj.get(i);
+			if (Integer.parseInt(tmpDemande.get("id").toString()) == id) {
+				ret = tmpDemande;
+				find = true;
+			}
+			i++;
+		}
+
+		return ret;
+	}
+
+    private JSONArray obj = new JSONArray();
     private int id = 0;
 
     public static void main(String[] args) {
@@ -62,8 +81,9 @@ public class Route {
       demande.put("type", request.queryParams("type"));
       demande.put("label", request.queryParams("label"));
       demande.put("origin", request.queryParams("origin"));
+      demande.put("voted", false);
 
-      route.obj.put("demande"+iddemande, demande);
+      route.obj.put(demande);
 
       route.id++;
       response.redirect("/demandes");
@@ -81,14 +101,22 @@ public class Route {
 		post("/demandes/:id", (request, response) -> {
 			String vote = request.queryParams("vote");
 
-			String json = "{'demandes':{'id':3}}";
+			JSONObject tmpDemande = route.getDemande(Integer.parseInt(request.params(":id")));
 
-			return "paramId=" + request.params(":id") + "; vote=" + vote + " ; json=" + json;
+			tmpDemande.put("voted", true);
+
+			//TODO redirection
+			return tmpDemande;
 		});
 
 		get("/demandes/:id", (request, response) -> {
+			JSONObject ret = route.getDemande(Integer.parseInt(request.params(":id")));
 
-			return "Test OK" + request.params(":id");
+			if (ret != null) {
+				return ret;
+			} else {
+				return "Erreur 404";
+			}
 		});
 	}
 }
