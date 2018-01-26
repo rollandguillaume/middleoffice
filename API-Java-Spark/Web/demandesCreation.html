@@ -11,27 +11,61 @@
   	<meta name="author" content="name">
   	<meta name="description" content="description here">
   	<meta name="keywords" content="keywords,here">
+  	
+  	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  
   </head>
   <body>
-  	<h1>Création d'une nouvelle demande</h1>
-  	
-  	
-  	<form action="/demandes" method="post">
-  		<label>Type de la demande : </label>  <input type="text" name="type" /> <br>
-  		<label>Label de la demande : </label>  <input type="text" name="label" /> <br>
-  		
-  		<label>Label de l'acceptation : </label> <input type="text" name="labelAccept" /> <br>
-  		<label>Lien de l'acceptation : </label> <input type="url" name="lienAccept" /> <br>
-  		
-  		<label>Label du refus : </label> <input type="text" name="labelRefusal" /> <br>
-  		<label>Lien du refus : </label> <input type="url" name="lienRefusal" /> <br>
-  		
-  		<label>Créateur de la demande : </label> <input type="text" name="origin" /> <br>
-  	
-  		<input type="submit" value="VALIDER">
-  	</form>
-  	
-  	
-  	
+  
+  	<div class="row">
+	  	<div class="col-3"></div>
+	  	<div class="col-6">
+	  		<h1>Création d'une nouvelle demande</h1>
+		  	<form action="/demandes" method="post">
+		  		<div class="form-group">
+			  		<label for="type">Type de la demande : </label>  
+			  		<select name="type" required class="form-control"> 
+			  			<option value="bourse" selected>Bourse</option>
+			  			<option value="salaire">Salaire</option>
+			  			<option value="conges">Congés</option>
+			  		</select>
+		  		</div>
+		  		
+		  		<div class="form-group">
+		  		<label for="label">Label de la demande : </label>  <input type="text" name="label" class="form-control" required /> 
+		  		</div>
+		  		
+		  		<div class="form-group">
+		  		<label for="labelAccept">Label de l'acceptation : </label> <input type="text" name="labelAccept" class="form-control" required/> <br>
+		  		</div>
+		  		
+		  		<div class="form-group">
+		  		<label for="lienAccept">Lien de l'acceptation : </label> <input type="url" name="lienAccept" class="form-control" required/> <br>
+		  		</div>
+		  		
+		  		<div class="form-group">
+		  		<label for="labelRefusal">Label du refus : </label> <input type="text" name="labelRefusal" class="form-control" required/> <br>
+		  		</div>
+		  		
+		  		<div class="form-group">
+		  		<label for="lienRefusal">Lien du refus : </label> <input type="url" name="lienRefusal" class="form-control" required/> <br>
+		  		</div>
+		  		
+		  		
+		  		<div class="form-group">
+		  		<label for="origin">Créateur de la demande : </label> <input type="text" class="form-control" name="origin" /> <br>
+		  		</div>
+		  	
+		  		<input type="submit" value="VALIDER" class="btn btn-primary" >
+		  		
+		  	</form>
+		  	
+		  </div>
+		  	
+	  	<div class="col-3"></div>
+  	</div>
   </body>
 </html>
