@@ -5,6 +5,7 @@ import static spark.Spark.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.ProcessBuilder.Redirect;
 
 import org.json.JSONObject;
 import org.json.JSONArray;
@@ -65,6 +66,7 @@ public class Route {
       route.obj.put("demande"+iddemande, demande);
 
       route.id++;
+      response.redirect("/demandes");
       return "demande ajoutée : voir GET /demandes";
     });
 
