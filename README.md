@@ -7,7 +7,7 @@ http://ensibs.westeurope.cloudapp.azure.com:82/
 
 
 ### Pour les utilisateurs
-    cd $RACINE_PROJET/
+    cd $RACINE_PROJET/API-Java-Spark
     mvn package
     sudo java -jar target/middleoffice-jar-with-dependencies.jar
   
