@@ -42,7 +42,7 @@ public class Route {
 			if (ret != null) {
 				return ret;
 			} else {
-				return "Erreur 404";
+				return "Demande introuvable.";
 			}
 		});
 	}
