@@ -20,7 +20,7 @@ Acces au serveur dans un navigateur :
     localhost:80/
     
 ### Pour les devs
-    Commande dans un termainal pour effectuer des requetes 
+  Commande dans un terminal pour effectuer des requetes 
 
     GET : <nom_de_la_machine>:80/
     POST : curl -X POST -d "param1=truc&param2=truc2" <nom_de_la_machine>:80/
