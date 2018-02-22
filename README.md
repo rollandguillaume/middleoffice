@@ -38,7 +38,6 @@ Réalisation :
     - [ ] Etre redirigé automatiquement vers l'url de la réponse donnée à la demande
 - [ ] Lecture et écriture dans un fichier json
 - [ ] Test POSTMAN
-
 - [x] Réalisation de Backlog
 - [x] Automatisation de déploiement sur le serveur du client avec un script pour une bonne gestion des conteneur Docker
 
